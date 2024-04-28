@@ -129,38 +129,56 @@ public class Invoice {
     }
     //Method to create new invoices
     public static void createNewInvoice() {
+
         System.out.println("Enter Invoice Header Details:");
-        System.out.print("Enter customer name: ");
-        String customerName = scanner.nextLine();
-        scanner.nextLine();
-        System.out.print("Enter customer phone number: ");
-        String phoneNumber = scanner.nextLine();
 
-        // Create a new Invoice object
-        Invoice newInvoice = new Invoice(customerName, phoneNumber);
-        shop.displayAllItems();
+        // Validate customer name
+        String customerName;
+        do {
+            System.out.print("Enter customer name: ");
+            customerName = scanner.nextLine().trim();
+            if (!Validation.isValidString(customerName)) {
+                System.out.println("Customer name cannot be empty. Please try again.");
+            }
+        } while (!Validation.isValidString(customerName));
 
-        boolean addingItems = true;
-        while (addingItems) {
-            System.out.print("Enter item ID to add to the invoice (0 to finish): ");
-            int itemId = scanner.nextInt();
+        // Validate phone number
+        String phoneNumber;
+        do {
+            System.out.print("Enter customer phone number: ");
+            phoneNumber = scanner.nextLine().trim();
+            if (!Validation.isValidPhoneNumber(phoneNumber)) {
+                System.out.println("Invalid phone number format. Please enter 8 digit number.");
+            }
+        } while (!Validation.isValidPhoneNumber(phoneNumber));
+            // Create a new Invoice object
+            Invoice newInvoice = new Invoice(customerName, phoneNumber);
+            shop.displayAllItems();
 
-            if (itemId == 0) {
-                addingItems = false;
-            } else {
-                Item item = shop.findItemById(itemId);
-                if (item != null) {
-                    newInvoice.addItem(item);
-                    System.out.println("Item added: " + item.getName());
+            // Add items to the invoice
+            boolean addingItems = true;
+            while (addingItems) {
+                System.out.print("Enter item ID to add to the invoice (0 to finish): ");
+                int itemId = scanner.nextInt();
+
+                if (itemId == 0) {
+                    addingItems = false;
                 } else {
-                    System.out.println("Item not found with ID: " + itemId);
+                    Item item = shop.findItemById(itemId);
+                    if (item != null) {
+                        newInvoice.addItem(item);
+                        System.out.println("Item added: " + item.getName());
+                    } else {
+                        System.out.println("Item not found with ID: " + itemId);
+                    }
                 }
             }
-        }
-        // Add the new invoice to the shop
-        shop.addInvoice(newInvoice);
-        System.out.println("Invoice created successfully.");
-    }
 
-}
+            // Add the new invoice to the shop
+            shop.addInvoice(newInvoice);
+            System.out.println("Invoice created successfully.");
+        }
+
+
+    }
 
