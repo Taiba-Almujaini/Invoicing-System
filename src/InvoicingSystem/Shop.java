@@ -42,17 +42,41 @@ public class Shop {
    // Method to set invoice header
     public void setInvoiceHeader() {
         System.out.println("Set Invoice Header:");
+
+        // Prompt for telephone number
         System.out.print("Enter telephone number: ");
-        String telephone = scanner.nextLine();
+        String telephone = scanner.nextLine().trim();
+        if (!Validation.isValidPhoneNumber(telephone)) {
+            System.out.println("Invalid telephone number format. Please enter a valid 8-digit phone number.");
+            return; // Exit method if validation fails
+        }
         invoiceHeader.put("Telephone", telephone);
+
+        // Prompt for fax number
         System.out.print("Enter fax number: ");
-        String fax = scanner.nextLine();
+        String fax = scanner.nextLine().trim();
+        if (!Validation.isValidString(fax)) {
+            System.out.println("Invalid fax number format. Please enter a valid number.");
+            return; // Exit method if validation fails
+        }
         invoiceHeader.put("Fax", fax);
+
+        // Prompt for email address
         System.out.print("Enter email address: ");
-        String email = scanner.nextLine();
+        String email = scanner.nextLine().trim();
+        if (!Validation.isValidEmail(email)) {
+            System.out.println("Invalid email address format. Please enter a valid email address.");
+            return; // Exit method if validation fails
+        }
         invoiceHeader.put("Email", email);
+
+        // Prompt for website URL
         System.out.print("Enter website URL: ");
-        String website = scanner.nextLine();
+        String website = scanner.nextLine().trim();
+        if (!Validation.isValidURL(website)) {
+            System.out.println("Invalid website URL format. Please enter a valid URL.");
+            return; // Exit method if validation fails
+        }
         invoiceHeader.put("Website", website);
 
         System.out.println("Invoice header set successfully.");
@@ -64,57 +88,147 @@ public class Shop {
     //Method to add items to items list
     public void addNewItem()
         {
+            // ask user to enter item ID and check validation
             System.out.print("Enter item ID: ");
-            Integer id = scanner.nextInt();
-            scanner.nextLine();
-            System.out.print("Enter item name: ");
-           String name=scanner.nextLine();
-            System.out.print("Enter unit price: ");
-            double price = scanner.nextDouble();
-            System.out.print("Enter quantity: ");
-            Integer quantity = scanner.nextInt();
+            int id;
+            while (true) {
+                try {
+                    id = Integer.parseInt(scanner.nextLine().trim());
+                    if (Validation.isPositiveNumber(id)) {
+                        break;
+                    } else {
+                        System.out.println("Invalid item ID. Please enter a positive integer.");
+                    }
+                } catch (NumberFormatException e) {
+                    System.out.println("Invalid item ID. Please enter a valid integer.");
+                }
+            }
 
+            // ask user to enter item name and check validation
+            System.out.print("Enter item name: ");
+            String name = scanner.nextLine().trim();
+            if (!Validation.isValidString(name)) {
+                System.out.println("Invalid item name. Please provide a non-empty name.");
+                return;
+            }
+
+            //  // ask user to enter item price and check validation
+            System.out.print("Enter unit price: ");
+            double price;
+            while (true) {
+                try {
+                    price = Double.parseDouble(scanner.nextLine().trim());
+                    if (Validation.isPositiveNumber(price)) {
+                        break;
+                    } else {
+                        System.out.println("Invalid unit price. Please enter a positive number.");
+                    }
+                } catch (NumberFormatException e) {
+                    System.out.println("Invalid unit price. Please enter a valid number.");
+                }
+            }
+            // ask user to enter item quantity and check validation
+            System.out.print("Enter quantity: ");
+            int quantity;
+            while (true) {
+                try {
+                    quantity = Integer.parseInt(scanner.nextLine().trim());
+                    if (Validation.isPositiveNumber(quantity)) {
+                        break;
+                    } else {
+                        System.out.println("Invalid quantity. Please enter a positive integer.");
+                    }
+                } catch (NumberFormatException e) {
+                    System.out.println("Invalid quantity. Please enter a valid integer.");
+                }
+            }
+
+            // All inputs are valid, create and add new item
             Item newItem = new Item(id, name, price, quantity);
             items.add(newItem);
             System.out.println("Item added successfully.");
         }
      // method for delete items
     public void deleteItem() {
-            System.out.print("Enter Item ID to delete: ");
-            Integer itemId = scanner.nextInt();
-            Item itemToRemove = null;
-            for (Item item : items) {
-                if (item.getId() == itemId) {
-                    itemToRemove = item;
+        System.out.print("Enter Item ID to delete: ");
+        int itemId;
+        while (true) {
+            try {
+                itemId = Integer.parseInt(scanner.nextLine().trim());
+                if (Validation.isPositiveNumber(itemId)) {
                     break;
+                } else {
+                    System.out.println("Invalid item ID. Please provide a positive integer.");
                 }
-            }
-            if (itemToRemove != null) {
-                items.remove(itemToRemove);
-                System.out.println("Item with ID " + itemId + " deleted successfully.");
-            } else {
-                System.out.println("Item with ID " + itemId + " does not exist in the inventory.");
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid item ID. Please enter a valid integer.");
             }
         }
+
+        // Find the item to remove based on the provided ID
+        Item itemToRemove = null;
+        for (Item item : items) {
+            if (item.getId() == itemId) {
+                itemToRemove = item;
+                break;
+            }
+        }
+
+        // Check if item to remove was found
+        if (itemToRemove != null) {
+            items.remove(itemToRemove);
+            System.out.println("Item with ID " + itemId + " deleted successfully.");
+        } else {
+            System.out.println("Item with ID " + itemId + " does not exist.");
+        }
+    }
     // method for change item price
     public void changeItemPrice() {
-            System.out.print("Enter Item ID to change price: ");
-            Integer itemId = scanner.nextInt();
-            System.out.print("Enter new price: ");
-            double newPrice = scanner.nextDouble();
-            boolean itemFound = false;
 
-            for (Item item : items) {
-                if (item.getId() == itemId) {
-                    item.setUnitPrice(newPrice);
-                    System.out.println("Price for item with ID " + itemId + " changed successfully.");
-                    itemFound = true;
+        System.out.print("Enter Item ID to change price: ");
+        int itemId;
+        while (true) {
+            try {
+                itemId = Integer.parseInt(scanner.nextLine().trim());
+                if (Validation.isPositiveNumber(itemId)) {
                     break;
+                } else {
+                    System.out.println("Invalid item ID. Please provide a positive integer.");
                 }
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid item ID. Please enter a valid integer.");
             }
-            if (!itemFound) {
-                System.out.println("Item with ID " + itemId + " does not exist in the inventory.");
+        }
+
+        System.out.print("Enter new price: ");
+        double newPrice;
+        while (true) {
+            try {
+                newPrice = Double.parseDouble(scanner.nextLine().trim());
+                if (Validation.isPositiveNumber(newPrice)) {
+                    break;
+                } else {
+                    System.out.println("Invalid price. Please provide a positive number.");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid price. Please enter a valid number.");
             }
+        }
+
+        // Search for the item with the specified ID and update its price
+        boolean itemFound = false;
+        for (Item item : items) {
+            if (item.getId() == itemId) {
+                item.setUnitPrice(newPrice);
+                System.out.println("Price for item with ID " + itemId + " changed successfully.");
+                itemFound = true;
+                break;
+            }
+        }
+
+        if (!itemFound) {
+            System.out.println("Item with ID " + itemId + " does not exist.");
+        }
         }
     //Method to report all items
     public  void reportAllItems(){
@@ -156,8 +270,12 @@ public class Shop {
     public void changeShopName() {
         System.out.print("Enter new shop name: ");
         String newName = scanner.nextLine();
-        setShopName(newName);
-        System.out.println("Shop name set to: " + newName);
+        if (Validation.isValidString(newName)) {
+            shop.setShopName(newName);
+            System.out.println("Shop name updated successfully.");
+        } else {
+            System.out.println("Invalid shop name. Please enter a valid name.");
+        }
     }
 //
     static void displayAllItems() {
@@ -233,9 +351,17 @@ public class Shop {
     //Method for search invoices by invoice number
     public void handleSearchInvoices() {
         System.out.println("\nSearch Invoices:");
-        // Prompt user to enter invoice number
-        System.out.print("Enter invoice number to search: ");
-        int invoiceNumber = scanner.nextInt();
+        // Validate and prompt user to enter invoice number
+        int invoiceNumber;
+        do {
+            System.out.print("Enter invoice number to search: ");
+            while (!scanner.hasNextInt()) {
+                System.out.println("Invalid input. Please enter a valid invoice number.");
+                scanner.next(); // Clear invalid input
+            }
+            invoiceNumber = scanner.nextInt();
+        } while (invoiceNumber <= 0);
+
         // Flag to track if the invoice was found
         boolean found = false;
         // Search for the invoice with the specified invoice number
