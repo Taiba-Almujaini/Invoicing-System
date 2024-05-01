@@ -1,6 +1,6 @@
 package InvoicingSystem;
 
-public class Item {
+public class Item implements ItemInterface{
     Integer id;
     String name;
     Double unitPrice;
@@ -23,6 +23,8 @@ public class Item {
                 ", quantity=" + quantity +
                 '}';
     }
+
+    @Override
     public Integer getId() {
         return id;
     }
@@ -30,26 +32,36 @@ public class Item {
     public void setId(Integer id) {
         this.id = id;
     }
+    @Override
     public String getName() {
         return name;
     }
+
     public void setName(String name) {
         this.name = name;
     }
-    public Double getUnitPrice() {
+
+    @Override
+    public double getUnitPrice() {
         return unitPrice;
     }
 
+    @Override
+    public void setUnitPrice(double unitPrice) {
+
+    }
+
+    @Override
     public void setUnitPrice(Double newPrice) {
 
         this.unitPrice = newPrice;
     }
-
-    public Integer getQuantity() {
+    @Override
+    public int getQuantity() {
 
         return quantity;
     }
-
+ @Override
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }
