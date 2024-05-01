@@ -8,7 +8,7 @@ import java.util.Map;
 import static InvoicingSystem.InvoicingShopSystem.scanner;
 import static InvoicingSystem.InvoicingShopSystem.shop;
 
-public class Shop {
+public class Shop implements ShopInterface {
          Integer id;
          String shopName;
          private Map<String, String> invoiceHeader;
@@ -22,11 +22,13 @@ public class Shop {
             this.invoiceHeader =new HashMap<>(); // Initialize the ArrayList
         }
     // Method to load default items
+    @Override
     public void loadDefaultItems() {
         // Load default items into the items list
         items.add(new Item(3, "Milk", 0.80, 20));
         items.add(new Item(4, "Bread", 1.00, 30));
     }
+    @Override
    //Method to load default invoices
    public void loadDefaultInvoices() {
         // Load default invoices into the invoices list
@@ -39,6 +41,7 @@ public class Shop {
         nasserInvoice.addItem(new Item(2, "Banana", 0.59, 3));
         invoices.add(nasserInvoice);
     }
+    @Override
    // Method to set invoice header
     public void setInvoiceHeader() {
         System.out.println("Set Invoice Header:");
@@ -85,6 +88,7 @@ public class Shop {
     public Map<String, String> getInvoiceHeader() {
         return invoiceHeader;
     }
+    @Override
     //Method to add items to items list
     public void addNewItem()
         {
@@ -148,6 +152,7 @@ public class Shop {
             items.add(newItem);
             System.out.println("Item added successfully.");
         }
+    @Override
      // method for delete items
     public void deleteItem() {
         System.out.print("Enter Item ID to delete: ");
@@ -182,6 +187,7 @@ public class Shop {
             System.out.println("Item with ID " + itemId + " does not exist.");
         }
     }
+    @Override
     // method for change item price
     public void changeItemPrice() {
 
@@ -230,6 +236,7 @@ public class Shop {
             System.out.println("Item with ID " + itemId + " does not exist.");
         }
         }
+    @Override
     //Method to report all items
     public  void reportAllItems(){
             List<Item> items = shop.getAllItems();
@@ -242,6 +249,7 @@ public class Shop {
                 }
             }
         }
+    @Override
     //Method to find items by itemId
    public Item findItemById(Integer itemId) {
         for (Item item : items) {
@@ -251,14 +259,16 @@ public class Shop {
         }
         return null; // Return null if item with specified ID is not found
     }
+    @Override
    //Method to add invoice to invoices List
    public void addInvoice(Invoice invoice) {
             invoices.add(invoice); // Add a new invoice to the shop
     }
     // method for get all items
-        public List<Item> getAllItems() {
+    public List<Item> getAllItems() {
             return items;
         }
+    @Override
     // method for get all invoices
     public List<Invoice> getAllInvoices() {
             return invoices;
@@ -267,6 +277,7 @@ public class Shop {
     {
         this.shopName = shopName;
     }
+    @Override
     public void changeShopName() {
         System.out.print("Enter new shop name: ");
         String newName = scanner.nextLine();
@@ -277,8 +288,8 @@ public class Shop {
             System.out.println("Invalid shop name. Please enter a valid name.");
         }
     }
-//
-    static void displayAllItems() {
+  @Override
+public void displayAllItems() {
         List<Item> items = shop.getAllItems();
         if (items.isEmpty()) {
             System.out.println("No items found.");
@@ -289,7 +300,7 @@ public class Shop {
             }
         }
     }
-
+    @Override
     public List<Item> getItems() {
 
             return items;
@@ -308,7 +319,9 @@ public class Shop {
     public void setInvoices(List<Invoice> invoices) {
 
         this.invoices = invoices;
-    }//Method to generate statistics report
+    }
+    @Override
+    //Method to generate statistics report
     public void generateStatisticsReport(){
         // Get statistics from the shop
         int itemCount = shop.getAllItems().size();
@@ -322,7 +335,7 @@ public class Shop {
         System.out.println("Total Sales: $" + totalSales);
     }
     //Method to calculate total sales
-    private static double calculateTotalSales() {
+    public double calculateTotalSales() {
         List<Invoice> invoices = shop.getAllInvoices();
         double totalSales = 0.0;
 
@@ -331,6 +344,7 @@ public class Shop {
         }
         return totalSales;
     }
+    @Override
    //Method to display all invoices report
     public void handleAllInvoicesReport() {
         System.out.println("\nAll Invoices Report:");
@@ -348,6 +362,7 @@ public class Shop {
             }
         }
     }
+    @Override
     //Method for search invoices by invoice number
     public void handleSearchInvoices() {
         System.out.println("\nSearch Invoices:");
@@ -377,8 +392,9 @@ public class Shop {
             System.out.println("Invoice with number " + invoiceNumber + " not found.");
         }
     }
+    @Override
    //Method to display all invoice details
-    private void displayInvoiceDetails(Invoice invoice) {
+    public void displayInvoiceDetails(Invoice invoice) {
         System.out.println("\nInvoice Details:");
         System.out.println("Invoice Number: " + invoice.getInvoiceNumber());
         System.out.println("Customer Name: " + invoice.getCustomerName());
