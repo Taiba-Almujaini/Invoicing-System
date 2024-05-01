@@ -7,7 +7,7 @@ import java.util.List;
 import static InvoicingSystem.InvoicingShopSystem.scanner;
 import static InvoicingSystem.InvoicingShopSystem.shop;
 
-public class Invoice {
+public class Invoice implements InvoiceInterface{
     Integer id;
      Integer invoiceNumber;
      String customerName;
@@ -42,6 +42,7 @@ public class Invoice {
                 ", paidAmount=" + paidAmount +
                 '}';
     }
+    @Override
     //Method to add  items and update the total amount
     public void addItem(Item item) {
         items.add(item);
@@ -55,7 +56,7 @@ public class Invoice {
     public void setId(Integer id) {
         this.id = id;
     }
-
+    @Override
     public Integer getInvoiceNumber() {
         return invoiceNumber;
     }
@@ -64,7 +65,7 @@ public class Invoice {
 
         this.invoiceNumber = invoiceNumber;
     }
-
+    @Override
     public String getCustomerName() {
 
         return customerName;
@@ -74,6 +75,7 @@ public class Invoice {
         this.customerName = customerName;
     }
 
+    @Override
     public String getPhoneNumber() {
         return phoneNumber;
     }
@@ -89,7 +91,7 @@ public class Invoice {
     public void setInvoiceDate(Date invoiceDate) {
         this.invoiceDate = invoiceDate;
     }
-
+@Override
     public List<Item> getItems() {
 
         return items;
@@ -116,11 +118,13 @@ public class Invoice {
 
         this.paidAmount = paidAmount;
     }
-    public double getBalance() {
+    @Override
+    public Double getBalance() {
 
         return totalAmount - paidAmount;
     }
-    public double calculateTotal() {
+    @Override
+    public Double calculateTotal() {
         double total = 0.0;
         for (Item item : items) {
             total += item.getUnitPrice() * item.getQuantity();
